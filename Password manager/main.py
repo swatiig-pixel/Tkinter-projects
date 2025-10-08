@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 import random
+import json
 
 def generate_pass():
   letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -26,19 +27,36 @@ def save():
   web = web_input.get()
   gmail = email_input.get()
   passwordz = password_input.get()
+  new_data = {
+    web: {
+      "email": gmail,
+      "password":passwordz
+    }
+  }
 
   if len(web) == 0 or len(passwordz) == 0:
     alert = messagebox.showinfo(title="Oops",message="You left some fields empty")
   else:
-    is_ok = messagebox.askokcancel(title=web,message=f"These are the details entered:\nEmail: {gmail} \nPassword: {passwordz} \nIs it ok to save?")
-
-    if is_ok:
-      with open("data.txt","a") as data_file:
-        data_file.write(f"{web} | {gmail} | {passwordz}\n")
+    try:
+      with open("data.json","r") as data_file:
+        data = json.load(data_file)
+    except FileNotFoundError:
+      with open("data.json","w") as data_file:
+        json.dump(new_data,data_file,indent=4)
+    else:
+      data.update(new_data)
+    
+      with open("data.json","w") as data_file:
+        json.dump(data,data_file,indent=4)
+          
+    finally:
         web_input.delete(0,END)
         password_input.delete(0,END)
 
   
+def search_fun():
+  check = web_input.get()
+  for name in new 
 
 
 
@@ -67,7 +85,7 @@ password = Label(text="Password:")
 password.grid(row=3,column=0)
 
 #Website entry
-web_input = Entry(width= 45)
+web_input = Entry(width= 40)
 web_input.grid(column=1,row=1,columnspan=2)
 web_input.focus()
 
@@ -87,5 +105,9 @@ generate_pass.grid(column=2,row=3)
 #Add button
 add_button = Button(text="Add",width=36,command=save)
 add_button.grid(column=1,row=4,columnspan=2)
+
+#search button
+search_button = Button(text="Search",width=10)
+search_button.grid(column=2,row=1)
 
 window.mainloop()
