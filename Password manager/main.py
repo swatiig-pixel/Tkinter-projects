@@ -4,6 +4,7 @@ import random
 import json
 
 def generate_pass():
+  password_input.delete(0,END)
   letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
   numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
   symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
@@ -56,7 +57,22 @@ def save():
   
 def search_fun():
   check = web_input.get()
-  for name in new 
+  try:
+    with open("data.json","r") as data_file:
+      data = json.load(data_file)
+      
+  except FileNotFoundError:
+    messagebox.showinfo(title="Error",message="No data file found")
+  else:
+    if check in data:
+        mail = data[check]["email"]
+        pw = data[check]["password"]
+        messagebox.showinfo(title=check,message=f"Your email is {email}\nPassword is {pw}")
+    else:
+      messagebox.showinfo(title="Error",message=f"No details for {check} exists")
+      web_input.delete(0,END)
+    
+  
 
 
 
@@ -107,7 +123,7 @@ add_button = Button(text="Add",width=36,command=save)
 add_button.grid(column=1,row=4,columnspan=2)
 
 #search button
-search_button = Button(text="Search",width=10)
+search_button = Button(text="Search",width=10,command=search_fun)
 search_button.grid(column=2,row=1)
 
 window.mainloop()
