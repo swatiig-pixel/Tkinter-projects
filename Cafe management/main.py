@@ -1,5 +1,6 @@
 from tkinter import *
 import time
+from all_fun import Menu
 
 window = Tk()
 window.title("cafe")
@@ -32,7 +33,8 @@ pizza = Button(
   fg="white",
   bg="#A3CCDA",
   font=("Comic Sans MS",11,"normal"),
-  width=20)
+  width=20,
+  )
 pizza.grid(column=0,row=2,pady=10)
 
 #Burger
@@ -111,6 +113,8 @@ def give_bill():
 
 
 give_bill = window.after(5000,give_bill())
+
+m = Menu()
 
 
 window.mainloop()
